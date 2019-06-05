@@ -24,7 +24,8 @@ app.controller('Ctrl', ['$scope', '$http', function ($scope, $http) {
                 console.log(dataObjects);  
   
                 if (dataObjects.length > 0) {  
-                     $scope.save(dataObjects);  
+                     //$scope.save(dataObjects); 
+                     localStorage.model = JSON.stringify(dataObjects); 
                      } 
                      else {  
                     $scope.msg = "Error : Something Wrong !";  
@@ -36,11 +37,12 @@ app.controller('Ctrl', ['$scope', '$http', function ($scope, $http) {
         }  
     }  
   
-    $scope.save = function (data) {  
-  
-        $http({  
+    /* $scope.save = function (data) {  
+       
+        localStorage.model = JSON.stringify(data);
+       $http({  
             method: "POST",  
-            url: "http://localhost:3000/UserDetails",  
+            url: "http://localhost:3001/UserDetail.json",  
             data: JSON.stringify(data), 
             //data:data, 
             headers: {  
@@ -57,12 +59,15 @@ app.controller('Ctrl', ['$scope', '$http', function ($scope, $http) {
         }, function (error) {  
             $scope.msg = "Error : Something Wrong";  
         })  
-   }
+   } */
+
   $scope.showData =function(){
        $scope.IsVisible= true;
-      
-         $http.get("http://localhost:3000/UserDetails")
+       if (localStorage.model)
+       $scope.UserDataFromWeb = JSON.parse(localStorage.model);
+       
+        /* $http.get("http://localhost:3000/UserDetails")
         .success(function(response) {$scope.UserDataFromWeb = response;});
-   }  
-  
+    */
+  }
 }]);   
