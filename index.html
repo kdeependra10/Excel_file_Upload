@@ -1,0 +1,163 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <title>.: Import Data with AngularJS :.</title>  
+    <meta charset="utf-8" />  
+  
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />  
+  
+  
+</head>  
+<body ng-app="app">  
+  
+    <div ng-controller="Ctrl" class="container" style="margin-top:50px;">  
+  
+  
+            <input type="file" name="file" class="form-control"  
+                   onchange="angular.element(this).scope().loadFile(this.files)" />  
+        <br/><br/>  
+            <input type="button" value="Import Data" class="btn btn-default"  
+                   ng-click="handleFile()" />  
+        <br/>  
+                <p ng-bind="msg"></p>  
+                <br>
+                <input type="button" value="Show Data" class="btn btn-default"  ng-click="showData()" /> 
+    <div ng-show="IsVisible">
+            <table class="table">
+                    <thead>
+                            <tr><th>User Name</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Date Of Birth</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                           <tr ng-repeat="d in UserDataFromWeb">
+                            <td>{{d.UserName}} </td>
+                            <td>{{d.FirstName}} </td>
+                            <td>{{d.LastName}} </td>
+                            <td>{{d.DOB}} </td>
+                           </tr>
+                           
+                    </tbody>
+                </table>
+    </div>
+  
+    </div>  
+  
+    <!-- JS -->  
+    <script src="Scripts/angular.min.js"></script>  
+    <script src="Scripts/importData.js"></script>  
+  
+    <script src="Scripts/xlsx.full.min.js"></script>  
+    <script src="Scripts/jszip.js"></script>  
+  
+  
+</body>  
+</html>   
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+
+    <style>
+        table, th, td {
+            border:solid 1px #CCC;
+            padding:1px 3px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp" 
+        ng-controller="myController">
+   
+        <input type="file" id="file1" name="file" multiple
+            ng-files="getTheFiles($files)" />
+
+        <input type="button" ng-click="uploadFiles()" value="Upload" />
+
+        <table>
+            <tr>
+                <th>ID</th>
+                    <th>Employee Name</th>
+                        <th>Date of Joining</th>
+                            <th>Address</th>
+            </tr>
+            <tr ng-repeat="emps in empArray | orderBy : 'ID'">
+
+                <td>{{emps.EmpID}}</td>
+                    <td>{{emps.EmpName}}</td>
+                        <td>{{emps.Doj}}</td>
+                            <td>{{emps.Address}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+        angular.module('myApp')
+            .directive('ngFiles', ['$parse', function ($parse) {
+    
+                function fn_link(scope, element, attrs) {
+                    var onChange = $parse(attrs.ngFiles);
+                    element.on('change', function (event) {
+                        onChange(scope, { $files: event.target.files });
+                    });
+                };
+    
+                return {
+                    link: fn_link
+                }
+            } ])
+            .controller('myController', function ($scope, $http) {
+                var formdata = new FormData();
+    
+                $scope.getTheFiles = function ($files) {
+                    angular.forEach($files, function (value, key) {
+                        formdata.append(key, value);
+                    });
+                };
+    
+                // UPLOAD THE FILES USING POST METHOD.
+                $scope.uploadFiles = function () {
+                    var request = {
+                        method: 'POST',
+                        url: '/api/fileupload/',
+                        data: formdata,
+                        headers: {
+                            'Content-Type': undefined
+                        },
+                        transformRequest: angular.identity
+                    };
+    
+                    $scope.empArray = new Array;
+    
+                    // SEND THE FILES TO THE WEB API.
+                    $http(request)
+                        .success(function (data) {
+                            var i = 0;
+    
+                            // LOOP THROUGH EACH DATA.
+                            angular.forEach(data, function () {
+                                var b = {
+                                    EmpID: data[i].UserName,
+                                    EmpName: data[i].FirstName,
+                                    Doj: data[i].DOB,
+                                    Address: data[i].LastName
+                                };
+    
+                                $scope.empArray.push(b);    // ADD DATA TO THE ARRAY.
+                                i += 1;
+                            });
+                        })
+                        .error(function () { });
+                }
+                console.log($scope.empArray);
+            });
+    </script>
+</html>
+-->
